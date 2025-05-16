@@ -290,15 +290,15 @@ const InvoiceForm = () => {
                                 required
                             />
                         </div>
-                        <div className="col-span-2 md:col-span-1 text-right">
+                        <div className="col-span-4 md:col-span-1 text-right">
                             <p className="font-medium">₹{(item.quantity && item.quantity * item.rate).toFixed(2)}</p>
                         </div>
-                        <div className="col-span-2 md:col-span-1">
+                        <div className="col-span-12 md:col-span-1">
                             {formData.items.length > 1 && (
                                 <button
                                     type="button"
                                     onClick={() => removeItem(index)}
-                                    className="p-2 bg-red-500 text-white rounded hover:bg-red-600"
+                                    className="p-2 bg-red-500 text-white rounded hover:bg-red-600 w-full"
                                 >
                                     ×
                                 </button>
