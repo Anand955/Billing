@@ -182,7 +182,7 @@ const InvoiceForm = () => {
             <div className="mb-6">
                 <h3 className="text-lg font-semibold mb-3">Customer Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className='relative'>
+                    <div className="relative">
                         <label className="block text-sm font-medium">Name</label>
                         <input
                             type="text"
@@ -222,6 +222,7 @@ const InvoiceForm = () => {
                     </div>
                 </div>
             </div>
+
 
             {/* Services Section */}
             <div className="mb-6">
