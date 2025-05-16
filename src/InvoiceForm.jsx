@@ -182,7 +182,7 @@ const InvoiceForm = () => {
             <div className="mb-6">
                 <h3 className="text-lg font-semibold mb-3">Customer Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="relative">
+                    <div className='relative'>
                         <label className="block text-sm font-medium">Name</label>
                         <input
                             type="text"
@@ -223,13 +223,12 @@ const InvoiceForm = () => {
                 </div>
             </div>
 
-
             {/* Services Section */}
             <div className="mb-6">
                 <h3 className="text-lg font-semibold mb-3">Services</h3>
                 {formData.items.map((item, index) => (
-                    <div key={index} className="grid grid-cols-12 gap-3 mb-3 items-end">
-                        <div className="col-span-3">
+                    <div key={index} className="grid grid-cols-12 gap-3 md:mb-3 mb-16 items-end">
+                        <div className="col-span-12 sm:col-span-3">
                             <label className="block text-sm mb-2 font-medium">Date</label>
                             <input
                                 type="date"
@@ -240,7 +239,7 @@ const InvoiceForm = () => {
                                 required
                             />
                         </div>
-                        <div className="col-span-5 relative">
+                        <div className="col-span-12 sm:col-span-5 relative">
                             <label className="block text-sm mb-2 font-medium">Service</label>
                             <input
                                 type="text"
@@ -266,7 +265,7 @@ const InvoiceForm = () => {
                                 </ul>
                             )}
                         </div>
-                        <div className="col-span-1">
+                        <div className="col-span-4 sm:col-span-1">
                             <label className="block text-sm mb-2 font-medium">Qty</label>
                             <input
                                 type="number"
@@ -278,7 +277,7 @@ const InvoiceForm = () => {
                                 required
                             />
                         </div>
-                        <div className="col-span-1">
+                        <div className="col-span-4 sm:col-span-1">
                             <label className="block text-sm mb-2 font-medium">Rate (₹)</label>
                             <input
                                 type="number"
@@ -291,10 +290,10 @@ const InvoiceForm = () => {
                                 required
                             />
                         </div>
-                        <div className="col-span-1 text-right">
+                        <div className="col-span-2 md:col-span-1 text-right">
                             <p className="font-medium">₹{(item.quantity && item.quantity * item.rate).toFixed(2)}</p>
                         </div>
-                        <div className="col-span-1">
+                        <div className="col-span-2 md:col-span-1">
                             {formData.items.length > 1 && (
                                 <button
                                     type="button"
