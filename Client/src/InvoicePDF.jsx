@@ -1,6 +1,6 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
-import logoImage from './assets/laundry-machine.png';
+import logoImage from '../public/images/laundry-machine.png';
 import delivery from './assets/delivery.png';
 
 const styles = StyleSheet.create({
