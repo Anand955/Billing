@@ -15,6 +15,22 @@ const InvoiceForm = () => {
     });
 
     const [showCustomerDropdown, setShowCustomerDropdown] = useState(false);
+    const [showBusinessDropdown, setShowBusinessDropdown] = useState(false);
+    const [showBankDetails, setShowBankDetails] = useState(false);
+    const [showBankDropdown, setShowBankDropdown] = useState(false);
+    const [businessInfo, setBusinessInfo] = useState({
+        name: "Apsara Power Laundry",
+        address1: "Shop No: 8, Kedar Appartment, Opp Chamak-Chuna",
+        address2: "Thakkar Nagar - 382350",
+        phone: "",
+        email: ""
+    });
+    const [bankDetails, setBankDetails] = useState({
+        accountName: "",
+        accountNumber: "",
+        ifsc: "",
+        bankName: ""
+    });
 
     const predefinedServices = [
         { service: 'White Apron', rate: 22 },
@@ -26,6 +42,77 @@ const InvoiceForm = () => {
     const customerList = [
         { name: 'Halewood Laboratories Private Limited', address: '319 G I D C Industrial Estate, Phase 2, Vatva, Ahmedabad, Gujarat 382440' },
         { name: 'Hagji Bhai', address: 'Some other address here' },
+    ];
+
+    const exampleBusinesses = [
+        {
+            name: "Apsara Power Laundry",
+            address1: "Shop No: 8, Kedar Appartment, Opp Chamak-Chuna",
+            address2: "Thakkar Nagar - 382350",
+            phone: "9558768784",
+            email: "apsarapowerlaundry@gmail.com"
+        },
+        {
+            name: "Bharat Laundry Services",
+            address1: "34, New Cloth Market",
+            address2: "Navrangpura, Ahmedabad - 380009",
+            phone: "9876543210",
+            email: "bharatlaundry@gmail.com"
+        },
+        {
+            name: "Shree Dry Clean",
+            address1: "45 Market Road",
+            address2: "Maninagar, Ahmedabad - 380008",
+            phone: "9123456780",
+            email: "shreedryclean@gmail.com"
+        },
+        {
+            name: "Crystal Laundry Services",
+            address1: "101, City Center",
+            address2: "Satellite, Ahmedabad - 380015",
+            phone: "9988776655",
+            email: "crystallaundry@gmail.com"
+        },
+        {
+            name: "Urban Wash Hub",
+            address1: "22, Riverfront Plaza",
+            address2: "Sabarmati, Ahmedabad - 380005",
+            phone: "9090909090",
+            email: "urbanwashhub@gmail.com"
+        }
+    ];
+
+    const exampleBankDetails = [
+        {
+            accountName: "Apsara Power Laundry",
+            accountNumber: "1234567890",
+            ifsc: "SBIN0001234",
+            bankName: "State Bank of India"
+        },
+        {
+            accountName: "Bharat Laundry Services",
+            accountNumber: "2345678901",
+            ifsc: "HDFC0005678",
+            bankName: "HDFC Bank"
+        },
+        {
+            accountName: "Shree Dry Clean",
+            accountNumber: "3456789012",
+            ifsc: "ICIC0004321",
+            bankName: "ICICI Bank"
+        },
+        {
+            accountName: "Crystal Laundry Services",
+            accountNumber: "4567890123",
+            ifsc: "AXIS0008765",
+            bankName: "Axis Bank"
+        },
+        {
+            accountName: "Urban Wash Hub",
+            accountNumber: "5678901234",
+            ifsc: "BOB0002468",
+            bankName: "Bank of Baroda"
+        }
     ];
 
     const calculateTotal = (items) => {
@@ -73,10 +160,12 @@ const InvoiceForm = () => {
     const generatePDF = async () => {
         const total = calculateTotal(formData.items);
 
-        // Add total to formData
+        // Add total, businessInfo, and bankDetails to formData
         const invoiceData = {
             ...formData,
-            total
+            total,
+            businessInfo,
+            bankDetails: showBankDetails ? bankDetails : null
         };
 
         // Generate PDF and download immediately
@@ -132,48 +221,127 @@ const InvoiceForm = () => {
         }));
     };
 
+    const handleBusinessInfoChange = (e) => {
+        const { name, value } = e.target;
+        setBusinessInfo(prev => ({
+            ...prev,
+            [name]: value
+        }));
+        if (name === "name") {
+            setShowBusinessDropdown(value.length > 0);
+        }
+    };
+
+    const handleBusinessSelect = (business) => {
+        setBusinessInfo(business);
+        setShowBusinessDropdown(false);
+    };
+
     return (
-        <form className="max-w-4xl mx-auto p-6 bg-gray-50 rounded-lg shadow">
+        <form className="max-w-4xl mx-auto p-4 sm:p-6 bg-gray-50 rounded-lg shadow">
             <h2 className="text-2xl font-bold mb-6 text-blue-800">Create New Invoice</h2>
 
-            {/* Business Information Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            {/* Invoice Number & Today Date */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div>
-                    <h3 className="text-lg font-semibold mb-3">Business Information</h3>
-                    <div className="space-y-3">
-                        <p className="font-medium">Apsara Power Laundry</p>
-                        <p>Shop No: 8, Kedar Appartment, Opp Chamak-Chuna</p>
-                        <p>Thakkar Nagar - 382350</p>
-                    </div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Invoice Number</label>
+                    <input
+                        type="text"
+                        name="invoiceNumber"
+                        value={formData.invoiceNumber}
+                        readOnly
+                        className="w-full p-3 border border-gray-300 rounded bg-gray-100 text-gray-700"
+                    />
                 </div>
-
                 <div>
-                    <h3 className="text-lg font-semibold mb-3">Invoice Details</h3>
-                    <div className="space-y-3">
-                        <div>
-                            <label className="block text-sm font-medium">Invoice #</label>
-                            <input
-                                type="text"
-                                name="invoiceNumber"
-                                value={formData.invoiceNumber}
-                                onChange={handleChange}
-                                className="w-full p-2 border rounded"
-                                required
-                            />
-                        </div>
-                        <div className="grid grid-cols-2 gap-3">
-                            <div>
-                                <label className="block text-sm font-medium">Date</label>
-                                <input
-                                    type="date"
-                                    name="invoiceDate"
-                                    value={formData.invoiceDate}
-                                    onChange={handleChange}
-                                    className="w-full p-2 border rounded"
-                                    required
-                                />
-                            </div>
-                        </div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">Today’s Date</label>
+                    <input
+                        type="text"
+                        value={new Date().toLocaleDateString('en-CA')}
+                        readOnly
+                        className="w-full p-3 border border-gray-300 rounded bg-gray-100 text-gray-700"
+                    />
+                </div>
+            </div>
+
+            {/* Business Information Section */}
+            <div className="mb-8">
+                <h3 className="text-xl font-bold text-blue-900 mb-4 border-b pb-2">Business Information</h3>
+                <div className="bg-white border border-blue-100 rounded-lg shadow-sm p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    <div className="relative md:col-span-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-1">Business Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={businessInfo.name}
+                            onChange={handleBusinessInfoChange}
+                            onFocus={() => setShowBusinessDropdown(businessInfo.name.length > 0)}
+                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 font-medium"
+                            placeholder="Business Name"
+                            required
+                            autoComplete="off"
+                        />
+                        {showBusinessDropdown && businessInfo.name && (
+                            <ul className="absolute bg-white border border-gray-300 mt-1 w-full max-h-48 overflow-auto z-20 rounded shadow">
+                                {exampleBusinesses
+                                    .filter(biz => biz.name.toLowerCase().includes(businessInfo.name.toLowerCase()))
+                                    .map((biz, idx) => (
+                                        <li
+                                            key={idx}
+                                            className="px-3 py-2 cursor-pointer hover:bg-blue-50"
+                                            onClick={() => handleBusinessSelect(biz)}
+                                        >
+                                            {biz.name}
+                                        </li>
+                                    ))}
+                            </ul>
+                        )}
+                    </div>
+                    <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-1">Address Line 1</label>
+                        <input
+                            type="text"
+                            name="address1"
+                            value={businessInfo.address1}
+                            onChange={handleBusinessInfoChange}
+                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            placeholder="Address Line 1"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-1">Address Line 2</label>
+                        <input
+                            type="text"
+                            name="address2"
+                            value={businessInfo.address2}
+                            onChange={handleBusinessInfoChange}
+                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            placeholder="Address Line 2"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-1">Phone Number</label>
+                        <input
+                            type="text"
+                            name="phone"
+                            value={businessInfo.phone}
+                            onChange={handleBusinessInfoChange}
+                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            placeholder="Phone Number"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-1">Email Address</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={businessInfo.email}
+                            onChange={handleBusinessInfoChange}
+                            className="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            placeholder="Email Address"
+                        />
                     </div>
                 </div>
             </div>
@@ -188,21 +356,20 @@ const InvoiceForm = () => {
                             type="text"
                             name="customerName"
                             value={formData.customerName || ''}
-                            onChange={handleCustomerChange} // Handle customer name change
-                            onFocus={() => setShowCustomerDropdown(true)} // Show dropdown on focus
-                            className="w-full p-2 border rounded"
+                            onChange={handleCustomerChange}
+                            onFocus={() => setShowCustomerDropdown(true)}
+                            className="w-full p-3 border border-gray-300 rounded"
                             required
                         />
-                        {/* Customer List Dropdown */}
                         {showCustomerDropdown && formData.customerName && (
-                            <ul className="absolute bg-white border border-gray-300 mt-1 w-full max-h-48 overflow-auto z-10">
+                            <ul className="absolute bg-white border border-gray-300 mt-1 w-full max-h-48 overflow-auto z-20 rounded shadow">
                                 {customerList
                                     .filter(customer => customer.name.toLowerCase().includes(formData.customerName.toLowerCase()))
                                     .map((customer, idx) => (
                                         <li
                                             key={idx}
                                             className="px-3 py-1 cursor-pointer hover:bg-gray-100"
-                                            onClick={() => handleCustomerSelect(customer.name)} // Close dropdown after selecting
+                                            onClick={() => handleCustomerSelect(customer.name)}
                                         >
                                             {customer.name}
                                         </li>
@@ -215,9 +382,9 @@ const InvoiceForm = () => {
                         <input
                             type="text"
                             name="customerAddress"
-                            value={formData.customerAddress || ''} // Set address dynamically
+                            value={formData.customerAddress || ''}
                             onChange={handleChange}
-                            className="w-full p-2 border rounded"
+                            className="w-full p-3 border border-gray-300 rounded"
                         />
                     </div>
                 </div>
@@ -227,8 +394,8 @@ const InvoiceForm = () => {
             <div className="mb-6">
                 <h3 className="text-lg font-semibold mb-3">Services</h3>
                 {formData.items.map((item, index) => (
-                    <div key={index} className="grid grid-cols-12 gap-3 md:mb-3 mb-16 items-end">
-                        <div className="col-span-12 sm:col-span-3">
+                    <div key={index} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-3 md:mb-3 mb-8 items-end">
+                        <div className="md:col-span-3">
                             <label className="block text-sm mb-2 font-medium">Date</label>
                             <input
                                 type="date"
@@ -239,7 +406,7 @@ const InvoiceForm = () => {
                                 required
                             />
                         </div>
-                        <div className="col-span-12 sm:col-span-5 relative">
+                        <div className="relative md:col-span-5">
                             <label className="block text-sm mb-2 font-medium">Service</label>
                             <input
                                 type="text"
@@ -249,10 +416,8 @@ const InvoiceForm = () => {
                                 className="w-full p-2 border rounded"
                                 required
                             />
-
-                            {/* Service Dropdown */}
                             {item.showDropdown && (
-                                <ul className="absolute bg-white border border-gray-300 mt-1 w-full max-h-48 overflow-auto z-10">
+                                <ul className="absolute bg-white border border-gray-300 mt-1 w-full max-h-48 overflow-auto z-20 rounded shadow">
                                     {predefinedServices.filter(service => service.service.toLowerCase().includes(item.service.toLowerCase())).map((service, idx) => (
                                         <li
                                             key={idx}
@@ -265,7 +430,7 @@ const InvoiceForm = () => {
                                 </ul>
                             )}
                         </div>
-                        <div className="col-span-4 sm:col-span-1">
+                        <div className="md:col-span-1">
                             <label className="block text-sm mb-2 font-medium">Qty</label>
                             <input
                                 type="number"
@@ -277,7 +442,7 @@ const InvoiceForm = () => {
                                 required
                             />
                         </div>
-                        <div className="col-span-4 sm:col-span-1">
+                        <div className="md:col-span-1">
                             <label className="block text-sm mb-2 font-medium">Rate (₹)</label>
                             <input
                                 type="number"
@@ -290,10 +455,10 @@ const InvoiceForm = () => {
                                 required
                             />
                         </div>
-                        <div className="col-span-4 md:col-span-1 text-right">
-                            <p className="font-medium">₹{(item.quantity && item.quantity * item.rate).toFixed(2)}</p>
+                        <div className="md:col-span-1 text-right">
+                            <p className="font-medium mt-2 md:mt-0">₹{(item.quantity && item.quantity * item.rate).toFixed(2)}</p>
                         </div>
-                        <div className="col-span-12 md:col-span-1">
+                        <div className="md:col-span-1">
                             {formData.items.length > 1 && (
                                 <button
                                     type="button"
@@ -309,7 +474,7 @@ const InvoiceForm = () => {
                 <button
                     type="button"
                     onClick={addItem}
-                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full sm:w-auto"
                 >
                     + Add Service
                 </button>
@@ -325,12 +490,79 @@ const InvoiceForm = () => {
                 </div>
             </div>
 
+            {/* Bank Details Section */}
+            <div className="mb-6">
+                <label className="flex items-center space-x-2">
+                    <input
+                        type="checkbox"
+                        checked={showBankDetails}
+                        onChange={e => setShowBankDetails(e.target.checked)}
+                    />
+                    <span>Add Bank Details</span>
+                </label>
+                {showBankDetails && (
+                    <div className="space-y-2">
+                        <input
+                            type="text"
+                            placeholder="Account Name"
+                            className="w-full p-2 border rounded"
+                            value={bankDetails.accountName}
+                            onChange={e => {
+                                setBankDetails(prev => ({ ...prev, accountName: e.target.value }));
+                                setShowBankDropdown(e.target.value.length > 0);
+                            }}
+                            onFocus={() => setShowBankDropdown(bankDetails.accountName.length > 0)}
+                            autoComplete="off"
+                        />
+                        {showBankDropdown && bankDetails.accountName && (
+                            <ul className="absolute bg-white border border-gray-300 mt-1 w-full max-h-48 overflow-auto z-20 rounded shadow">
+                                {exampleBankDetails
+                                    .filter(bd => bd.accountName.toLowerCase().includes(bankDetails.accountName.toLowerCase()))
+                                    .map((bd, idx) => (
+                                        <li
+                                            key={idx}
+                                            className="px-3 py-1 cursor-pointer hover:bg-gray-100"
+                                            onClick={() => {
+                                                setBankDetails(bd);
+                                                setShowBankDropdown(false);
+                                            }}
+                                        >
+                                            {bd.accountName}
+                                        </li>
+                                    ))}
+                            </ul>
+                        )}
+                        <input
+                            type="text"
+                            placeholder="Account Number"
+                            className="w-full p-2 border rounded"
+                            value={bankDetails.accountNumber}
+                            onChange={e => setBankDetails(prev => ({ ...prev, accountNumber: e.target.value }))}
+                        />
+                        <input
+                            type="text"
+                            placeholder="IFSC Code"
+                            className="w-full p-2 border rounded"
+                            value={bankDetails.ifsc}
+                            onChange={e => setBankDetails(prev => ({ ...prev, ifsc: e.target.value }))}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Bank Name"
+                            className="w-full p-2 border rounded"
+                            value={bankDetails.bankName}
+                            onChange={e => setBankDetails(prev => ({ ...prev, bankName: e.target.value }))}
+                        />
+                    </div>
+                )}
+            </div>
+
             {/* PDF Generation Button */}
-            <div className="flex justify-end">
+            <div className="flex flex-col sm:flex-row justify-end gap-2">
                 <button
                     type="button"
                     onClick={generatePDF}
-                    className="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700"
+                    className="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 w-full sm:w-auto"
                 >
                     Download Invoice as PDF
                 </button>

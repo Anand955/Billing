@@ -147,11 +147,21 @@ const InvoicePDF = ({ invoiceData }) => (
         <Page size="A4" style={styles.page}>
             <View style={styles.header}>
                 <View>
-                    <Text style={styles.title}>APSARA POWER LAUNDRY</Text>
-                    <Text style={styles.minititle}>Shop No: 8, Kedar Appartment, Opp Chamak-Chuna</Text>
-                    <Text style={styles.minititle}>Thakkar Nagar - 382350</Text>
-                    <Text style={styles.minititle}>Phone: 9558768784</Text>
-                    <Text style={styles.minititle}>Email: ananddagar111@gmail.com</Text>
+                    <Text style={styles.title}>
+                        {invoiceData.businessInfo?.name || "APSARA POWER LAUNDRY"}
+                    </Text>
+                    <Text style={styles.minititle}>
+                        {invoiceData.businessInfo?.address1 || "Shop No: 8, Kedar Appartment, Opp Chamak-Chuna"}
+                    </Text>
+                    <Text style={styles.minititle}>
+                        {invoiceData.businessInfo?.address2 || "Thakkar Nagar - 382350"}
+                    </Text>
+                    <Text style={styles.minititle}>
+                        Phone: {invoiceData.businessInfo?.phone || "9558768784"}
+                    </Text>
+                    <Text style={styles.minititle}>
+                        Email: {invoiceData.businessInfo?.email || "ananddagar111@gmail.com"}
+                    </Text>
                 </View>
 
                 <View style={styles.image}>
@@ -205,13 +215,15 @@ const InvoicePDF = ({ invoiceData }) => (
                 </Text>
             </View>
 
-            <View>
-                <Text style={{ color: "#000", fontSize: 14, fontWeight: "bold", marginBottom: 5 }}>Bank Details</Text>
-                <Text style={{ color: "#4a5565", fontSize: 10, marginBottom: 3 }}>Account Name: Dagar Anand Kishanbhai</Text>
-                <Text style={{ color: "#4a5565", fontSize: 10, marginBottom: 3 }}>Account Number: 4647033889</Text>
-                <Text style={{ color: "#4a5565", fontSize: 10, marginBottom: 3 }}>IFSC Code: KKBK0002603</Text>
-                <Text style={{ color: "#4a5565", fontSize: 10, marginBottom: 3 }}>Bank Name: Kotak Mahindra Bank</Text>
-            </View>
+            {invoiceData.bankDetails && (
+                <View>
+                    <Text style={{ color: "#000", fontSize: 14, fontWeight: "bold", marginBottom: 5 }}>Bank Details</Text>
+                    <Text style={{ color: "#4a5565", fontSize: 10, marginBottom: 3 }}>Account Name: {invoiceData.bankDetails.accountName}</Text>
+                    <Text style={{ color: "#4a5565", fontSize: 10, marginBottom: 3 }}>Account Number: {invoiceData.bankDetails.accountNumber}</Text>
+                    <Text style={{ color: "#4a5565", fontSize: 10, marginBottom: 3 }}>IFSC Code: {invoiceData.bankDetails.ifsc}</Text>
+                    <Text style={{ color: "#4a5565", fontSize: 10, marginBottom: 3 }}>Bank Name: {invoiceData.bankDetails.bankName}</Text>
+                </View>
+            )}
 
             {/* Footer Section for Quote - this will now be at the bottom */}
             <View style={styles.footer}>
