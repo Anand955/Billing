@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { PDFDownloadLink, pdf } from '@react-pdf/renderer';
-import InvoiceForm from './InvoiceForm';
-import InvoicePDF from './InvoicePDF';
+import React, { useState } from "react";
+import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
+import InvoiceForm from "./InvoiceForm";
+import InvoicePDF from "./InvoicePDF";
 
 function App() {
   const [invoiceData, setInvoiceData] = useState(null);
@@ -19,7 +19,7 @@ function App() {
 
     const blob = await pdf(<InvoicePDF invoiceData={invoiceData} />).toBlob();
     const pdfUrl = URL.createObjectURL(blob);
-    window.open(pdfUrl, '_blank');
+    window.open(pdfUrl, "_blank");
   };
 
   return (
@@ -41,7 +41,7 @@ function App() {
               fileName={`invoice_${invoiceData.invoiceNumber}.pdf`}
               className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             >
-              {({ loading }) => (loading ? 'Preparing PDF...' : 'Download PDF')}
+              {({ loading }) => (loading ? "Preparing PDF..." : "Download PDF")}
             </PDFDownloadLink>
 
             <button
