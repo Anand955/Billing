@@ -323,7 +323,7 @@ const InvoiceForm = () => {
       </h2>
 
       {/* Invoice Number & Today Date */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div className="bg-gray-50 border border-blue-100 rounded-lg shadow-sm p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6">
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
             Invoice Number
@@ -454,7 +454,7 @@ const InvoiceForm = () => {
         <h3 className="text-lg md:text-xl font-semibold mb-3">
           Customer Information
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-gray-50 border border-blue-100 rounded-lg shadow-sm p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           <div className="relative">
             <label className="block text-sm font-medium">Name</label>
             <input
@@ -505,7 +505,7 @@ const InvoiceForm = () => {
         {formData.items.map((item, index) => (
           <div
             key={index}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-3 md:mb-3 mb-8 items-end"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-3 md:mb-3 mb-8 items-end  border-1 border-gray-200 p-3 rounded-lg shadow-sm"
           >
             <div className="md:col-span-3">
               <label className="block text-sm mb-2 font-medium">Date</label>
@@ -632,7 +632,7 @@ const InvoiceForm = () => {
           </label>
         </div>
         {showBankDetails && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+          <div className="bg-gray-50 border border-blue-100 rounded-lg shadow-sm p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
             {/* Bank Details Fields */}
             <div className="space-y-2">
               <input
