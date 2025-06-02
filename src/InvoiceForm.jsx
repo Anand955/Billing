@@ -47,10 +47,10 @@ const InvoiceForm = () => {
   });
 
   const predefinedServices = [
-    { service: "White Apron", rate: 22 },
+    { service: "Appron", rate: 22 },
     { service: "Blue Face Mask", rate: 5 },
     { service: "Blue Socks", rate: 5 },
-    { service: "Blue Apron", rate: 40 },
+    { service: "Blue Gaun", rate: 40 },
   ];
 
   const customerList = [
